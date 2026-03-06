@@ -5,19 +5,19 @@ A professional web application that solves the Water Jug Problem using the Depth
 ## Screenshots
 
 ### Main Interface
-![Main Interface](../images/1.png)
+![Main Interface](images/1.png)
 
 ### Input Configuration
-![Input Configuration](../images/2.png)
+![Input Configuration](images/2.png)
 
 ### Solution Visualization
-![Solution Visualization](../images/3.png)
+![Solution Visualization](images/3.png)
 
 ### Step-by-Step Operations
-![Step-by-Step Operations](../images/4.png)
+![Step-by-Step Operations](images/4.png)
 
 ### Water Jug Animation
-![Water Jug Animation](../images/5.png)
+![Water Jug Animation](images/5.png)
 
 ## Features
 
