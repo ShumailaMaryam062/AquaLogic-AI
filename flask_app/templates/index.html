@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaLogic AI | Smart Water Jug Solver</title>
+    <meta name="description" content="Intelligent Water Jug Problem Solver using AI Search Algorithms">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="particles"></div>
+    
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="brand-icon">🌊</span>
+                <span class="brand-text">AquaLogic<span class="brand-accent">AI</span></span>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn tooltip" data-tooltip="Toggle Theme" id="themeToggle">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button class="nav-btn tooltip" data-tooltip="View History" id="historyBtn">
+                    <span>📜</span>
+                </button>
+                <button class="nav-btn tooltip" data-tooltip="Help" id="helpBtn">
+                    <span>❓</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <div class="logo-water"></div>
+                    🌊
+                </div>
+                <div class="logo-rings"></div>
+            </div>
+            <h1 class="title">AquaLogic <span class="title-accent">AI</span></h1>
+            <p class="subtitle">Intelligent Water Jug Problem Solver</p>
+            <div class="header-badges">
+                <span class="badge badge-primary">
+                    <span class="badge-dot"></span>
+                    DFS Algorithm
+                </span>
+                <span class="badge badge-secondary">
+                    <span class="badge-dot"></span>
+                    Real-time Visualization
+                </span>
+                <span class="badge badge-accent">
+                    <span class="badge-dot"></span>
+                    AI Powered
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content-wrapper">
+            <!-- Quick Presets -->
+            <div class="presets-bar">
+                <span class="presets-label">Quick Presets:</span>
+                <button class="preset-btn" data-jug1="4" data-jug2="3" data-goal="2">Classic (4,3→2)</button>
+                <button class="preset-btn" data-jug1="5" data-jug2="3" data-goal="4">Medium (5,3→4)</button>
+                <button class="preset-btn" data-jug1="8" data-jug2="5" data-goal="4">Hard (8,5→4)</button>
+                <button class="preset-btn" data-jug1="7" data-jug2="4" data-goal="2">Expert (7,4→2)</button>
+            </div>
+
+            <!-- Input Section -->
+            <div class="card input-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span class="icon">⚙️</span>
+                        Configure Problem
+                    </h2>
+                    <div class="card-actions">
+                        <button class="icon-btn tooltip" data-tooltip="Random Values" id="randomBtn">🎲</button>
+                        <button class="icon-btn tooltip" data-tooltip="Clear Form" id="clearBtn">🗑️</button>
+                    </div>
+                </div>
+                <form id="jugsForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jug1">
+                                <span class="label-icon jug-icon-1">🫙</span>
+                                Jug 1 Capacity
+                            </label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="number" 
+                                    id="jug1" 
+                                    name="jug1" 
+                                    placeholder="e.g., 4" 
+                                    min="1" 
+                                    max="100"
+                                    required
+                                >
+                                <span class="input-unit">L</span>
+                            </div>
+                            <span class="input-info">Larger jug capacity</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jug2">
+                                <span class="label-icon jug-icon-2">🫙</span>
+                                Jug 2 Capacity
+                            </label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="number" 
+                                    id="jug2" 
+                                    name="jug2" 
+                                    placeholder="e.g., 3" 
+                                    min="1" 
+                                    max="100"
+                                    required
+                                >
+                                <span class="input-unit">L</span>
+                            </div>
+                            <span class="input-info">Smaller jug capacity</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goal">
+                                <span class="label-icon goal-icon">🎯</span>
+                                Target Amount
+                            </label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="number" 
+                                    id="goal" 
+                                    name="goal" 
+                                    placeholder="e.g., 2" 
+                                    min="1" 
+                                    max="100"
+                                    required
+                                >
+                                <span class="input-unit">L</span>
+                            </div>
+                            <span class="input-info">Target measurement</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-glow" id="solveBtn">
+                        <span class="btn-icon">🚀</span>
+                        <span class="btn-text">Solve Problem</span>
+                        <div class="btn-loader hidden" id="loader"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsContainer" class="hidden">
+                <!-- Success Banner -->
+                <div class="success-banner">
+                    <div class="success-icon">✅</div>
+                    <div class="success-text">
+                        <h3>Solution Found!</h3>
+                        <p>AquaLogic AI successfully solved the problem</p>
+                    </div>
+                    <button class="btn-mini" id="replayBtn">🔄 Replay</button>
+                </div>
+
+                <!-- Solution Summary -->
+                <div class="card solution-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📊</span>
+                            Solution Analysis
+                        </h2>
+                        <div class="card-actions">
+                            <button class="icon-btn tooltip" data-tooltip="Copy Solution" id="copyBtn">📋</button>
+                            <button class="icon-btn tooltip" data-tooltip="Export PDF" id="exportBtn">📄</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Water Jug Visualization -->
+                    <div class="jugs-visualization">
+                        <div class="jug-container">
+                            <div class="jug-labels">
+                                <span class="jug-title">Jug 1</span>
+                            </div>
+                            <div class="jug" id="jug1Visual" style="height: 150px;">
+                                <div class="jug-water" id="jug1Water" style="height: 0%;"></div>
+                                <div class="jug-measure"></div>
+                            </div>
+                            <div class="jug-info">
+                                <div class="jug-amount" id="jug1CurrentAmount">0L</div>
+                                <div class="jug-capacity">/ <span id="jug1Cap">-</span>L</div>
+                            </div>
+                        </div>
+                        
+                        <div class="jugs-connector">
+                            <div class="connector-arrow" id="pourArrow">⇄</div>
+                            <div class="connector-label" id="pourLabel">Pour</div>
+                        </div>
+                        
+                        <div class="jug-container">
+                            <div class="jug-labels">
+                                <span class="jug-title">Jug 2</span>
+                            </div>
+                            <div class="jug" id="jug2Visual" style="height: 120px;">
+                                <div class="jug-water" id="jug2Water" style="height: 0%;"></div>
+                                <div class="jug-measure"></div>
+                            </div>
+                            <div class="jug-info">
+                                <div class="jug-amount" id="jug2CurrentAmount">0L</div>
+                                <div class="jug-capacity">/ <span id="jug2Cap">-</span>L</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🫙</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="summaryJug1">-</span>
+                                <span class="stat-label">Jug 1 Size</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🫙</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="summaryJug2">-</span>
+                                <span class="stat-label">Jug 2 Size</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="summaryGoal">-</span>
+                                <span class="stat-label">Target</span>
+                            </div>
+                        </div>
+                        <div class="stat-card highlight">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="totalMoves">-</span>
+                                <span class="stat-label">Steps</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔍</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="statesExplored">-</span>
+                                <span class="stat-label">States</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="solveTime">-</span>
+                                <span class="stat-label">Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playback Controls -->
+                <div class="playback-controls">
+                    <button class="playback-btn" id="prevStepBtn">⏮️</button>
+                    <button class="playback-btn" id="playPauseBtn">▶️</button>
+                    <button class="playback-btn" id="nextStepBtn">⏭️</button>
+                    <div class="playback-progress">
+                        <input type="range" id="stepSlider" min="0" max="100" value="0">
+                        <span class="step-indicator">Step <span id="currentStepNum">0</span> of <span id="totalStepNum">0</span></span>
+                    </div>
+                    <div class="speed-control">
+                        <label>Speed:</label>
+                        <select id="speedSelect">
+                            <option value="1500">0.5x</option>
+                            <option value="800" selected>1x</option>
+                            <option value="400">2x</option>
+                            <option value="200">4x</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- State Timeline -->
+                <div class="card visualization-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">🔄</span>
+                            State Transitions
+                        </h2>
+                        <span class="timeline-hint">Click any state to jump</span>
+                    </div>
+                    <div class="states-container">
+                        <div id="statesTimeline" class="states-timeline"></div>
+                    </div>
+                </div>
+
+                <!-- Steps Section -->
+                <div class="card steps-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📋</span>
+                            Step-by-Step Operations
+                        </h2>
+                        <div class="steps-filter">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="fill">Fill</button>
+                            <button class="filter-btn" data-filter="empty">Empty</button>
+                            <button class="filter-btn" data-filter="pour">Pour</button>
+                        </div>
+                    </div>
+                    <div class="steps-container">
+                        <div id="stepsList" class="steps-list"></div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <span class="btn-icon">↩️</span>
+                        Solve New Problem
+                    </button>
+                    <button class="btn btn-outline" id="shareBtn">
+                        <span class="btn-icon">🔗</span>
+                        Share Solution
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div id="errorContainer" class="hidden">
+                <div class="card error-card">
+                    <div class="error-icon-large">⚠️</div>
+                    <h2 class="card-title">
+                        <span class="icon">❌</span>
+                        No Solution Found
+                    </h2>
+                    <p id="errorMessage" class="error-message"></p>
+                    <div class="error-suggestions">
+                        <h4>💡 Suggestions:</h4>
+                        <ul id="errorSuggestions">
+                            <li><i class="fas fa-lightbulb"></i> Ensure the goal is achievable with the given jug sizes</li>
+                            <li><i class="fas fa-lightbulb"></i> Try different jug capacity combinations</li>
+                            <li><i class="fas fa-lightbulb"></i> The goal must be reachable using GCD principle</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-secondary" id="resetBtnError">
+                        <span class="btn-icon">↩️</span>
+                        Try Different Values
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="card info-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span class="icon">💡</span>
+                        How AquaLogic AI Works
+                    </h2>
+                    <button class="expand-btn" id="expandInfo">
+                        <span>▼</span>
+                    </button>
+                </div>
+                <div class="info-content" id="infoContent">
+                    <div class="info-grid">
+                        <div class="info-block">
+                            <div class="info-icon">🧠</div>
+                            <h3>DFS Algorithm</h3>
+                            <p>Uses <strong>Depth-First Search</strong> to explore all possible states and find the optimal path to your goal.</p>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-icon">🔧</div>
+                            <h3>Operations</h3>
+                            <ul>
+                                <li><strong>Fill</strong> — Fill jug to max</li>
+                                <li><strong>Empty</strong> — Empty completely</li>
+                                <li><strong>Pour</strong> — Transfer between jugs</li>
+                            </ul>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-icon">📊</div>
+                            <h3>State Space</h3>
+                            <p>Each state <code>(x, y)</code> represents water levels in both jugs. The algorithm tracks visited states to avoid cycles.</p>
+                        </div>
+                        <div class="info-block">
+                            <div class="info-icon">🎯</div>
+                            <h3>Goal Condition</h3>
+                            <p>Solution is found when either jug contains exactly the target amount of water.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="math-section">
+                        <h3>📐 Mathematical Insight</h3>
+                        <p>A solution exists if and only if the target is divisible by <strong>GCD(jug1, jug2)</strong> and doesn't exceed the larger jug.</p>
+                        <div class="formula">
+                            target mod GCD(jug₁, jug₂) = 0 ∧ target ≤ max(jug₁, jug₂)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Modal -->
+            <div id="historyModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📜 Solution History</h3>
+                        <button class="close-btn" id="closeHistory">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="historyList" class="history-list">
+                            <p class="empty-history">No previous solutions yet</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="clearHistory">🗑️ Clear History</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Modal -->
+            <div id="helpModal" class="modal hidden">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h3>❓ Help & Guide</h3>
+                        <button class="close-btn" id="closeHelp">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="help-tabs">
+                            <button class="help-tab active" data-tab="basics">Basics</button>
+                            <button class="help-tab" data-tab="shortcuts">Shortcuts</button>
+                            <button class="help-tab" data-tab="examples">Examples</button>
+                        </div>
+                        <div class="help-content" id="helpContent">
+                            <div class="help-panel active" data-panel="basics">
+                                <h4>🚀 Getting Started</h4>
+                                <ol>
+                                    <li>Enter the capacity of two jugs in liters</li>
+                                    <li>Enter the target amount you want to measure</li>
+                                    <li>Click "Solve Problem" to find the solution</li>
+                                    <li>Watch the animated visualization of each step</li>
+                                </ol>
+                            </div>
+                            <div class="help-panel" data-panel="shortcuts">
+                                <h4>⌨️ Keyboard Shortcuts</h4>
+                                <div class="shortcuts-grid">
+                                    <div class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> Solve</div>
+                                    <div class="shortcut"><kbd>Esc</kbd> Reset</div>
+                                    <div class="shortcut"><kbd>Space</kbd> Play/Pause</div>
+                                    <div class="shortcut"><kbd>←</kbd><kbd>→</kbd> Navigate Steps</div>
+                                </div>
+                            </div>
+                            <div class="help-panel" data-panel="examples">
+                                <h4>📚 Classic Examples</h4>
+                                <div class="examples-list">
+                                    <div class="example-item">
+                                        <strong>Die Hard 3 Puzzle:</strong> 5L & 3L jugs → measure 4L
+                                    </div>
+                                    <div class="example-item">
+                                        <strong>Classic Puzzle:</strong> 4L & 3L jugs → measure 2L
+                                    </div>
+                                    <div class="example-item">
+                                        <strong>GCD Example:</strong> 8L & 5L jugs → measure 1L
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="brand-icon-sm">🌊</span>
+                    <span>AquaLogic AI</span>
+                </div>
+                <div class="footer-links">
+                    <span>Made by Shumaila Maryam</span>
+                    <span class="divider">•</span>
+                    <span>Depth-First Search</span>
+                    <span class="divider">•</span>
+                    <span>2026</span>
+                </div>
+                <div class="footer-credits">
+                    <p>Built with Flask & Python</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Confetti Canvas -->
+    <canvas id="confetti" class="confetti-canvas"></canvas>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
