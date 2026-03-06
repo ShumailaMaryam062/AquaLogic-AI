@@ -1,198 +1,154 @@
-# 💧 Water Jug Problem - Depth First Search
+# AquaLogic AI - Smart Water Jug Solver
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Algorithm](https://img.shields.io/badge/Algorithm-DFS-orange.svg)](https://en.wikipedia.org/wiki/Depth-first_search)
-[![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-red.svg)](https://jupyter.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+A professional web application that solves the Water Jug Problem using the Depth-First Search (DFS) algorithm.
 
-## 📋 Overview
+## Screenshots
 
-A comprehensive implementation of the classic **Water Jug Problem** using **Depth-First Search (DFS)** algorithm. This classical AI problem demonstrates state-space search techniques and backtracking strategies.
+### Main Interface
+![Main Interface](../images/1.png)
 
-Given two jugs with different capacities, find the optimal sequence of operations to measure a target volume of water.
+### Input Configuration
+![Input Configuration](../images/2.png)
 
----
+### Solution Visualization
+![Solution Visualization](../images/3.png)
 
-## 🎯 Problem Definition
+### Step-by-Step Operations
+![Step-by-Step Operations](../images/4.png)
 
-### Problem Statement
-Given two containers (Jug 1 and Jug 2):
-- **Jug 1 Capacity:** 4 liters
-- **Jug 2 Capacity:** 3 liters
-- **Goal:** Measure exactly **2 liters** of water in one of the jugs
+### Water Jug Animation
+![Water Jug Animation](../images/5.png)
 
-### State Space Representation
-Each state is represented as a tuple `(x, y)` where:
-- `x` ∈ [0, 4] - Amount of water in Jug 1
-- `y` ∈ [0, 3] - Amount of water in Jug 2
+## Features
 
-### Initial State
-`(0, 0)` - Both jugs empty
+✨ **Professional UI/UX**
+- Modern, responsive design with gradient backgrounds
+- Glass-morphism effects and smooth animations
+- Beautiful card-based layout with dark/light theme
+- Mobile-friendly interface
 
-### Goal State 
-`(2, y)` or `(x, 2)` where either jug contains exactly 2 liters
+🎯 **Core Functionality**
+- Solves the Water Jug Problem using DFS algorithm
+- Real-time solution visualization with animated water jugs
+- Step-by-step operation display with playback controls
+- State transition timeline
+- Quick presets for common puzzles
+- History tracking and export functionality
 
----
-
-## ⚙️ Allowed Operations
-
-| Operation | Description | State Transition |
-|-----------|-------------|------------------|
-| **Fill Jug 1** | Fill Jug 1 completely | `(x, y) → (4, y)` |
-| **Fill Jug 2** | Fill Jug 2 completely | `(x, y) → (x, 3)` |
-| **Empty Jug 1** | Empty Jug 1 completely | `(x, y) → (0, y)` |
-| **Empty Jug 2** | Empty Jug 2 completely | `(x, y) → (x, 0)` |
-| **Pour 1→2** | Pour Jug 1 into Jug 2 | `(x, y) → (x-a, y+a)` |
-| **Pour 2→1** | Pour Jug 2 into Jug 1 | `(x, y) → (x+a, y-a)` |
-
----
-
-## 🔄 Algorithm Details
-
-### Search Strategy: Depth-First Search (DFS)
-
-**Time Complexity:** O(4×3) = O(12) states maximum
-**Space Complexity:** O(h) where h is the maximum depth
-
-### Implementation Features
-
-```python
-class WaterJugProblem:
-    ├── __init__(jug1, jug2, goal)      # Initialize with capacities
-    ├── check_goal(state)               # Verify if goal state reached
-    ├── possible_moves(state)           # Generate all valid next states
-    ├── dfs(current_state)              # Main DFS search algorithm
-    ├── solve()                         # Solve the problem
-    └── print_solution()                # Display the solution path
-```
-
-### Solution Output
-- **Search Path:** All visited states
-- **Operations List:** Detailed operations at each step
-- **Total Moves:** Minimum number of steps to reach goal
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-Task 03/
-├── README.md              # This file
-├── Waterjug.ipynb         # Complete solution notebook
-└── [output files]         # Generated solution outputs
+flask_app/
+├── app.py                 # Flask application and WaterJug solver logic
+├── requirements.txt       # Python dependencies
+├── templates/
+│   └── index.html        # Main HTML template
+└── static/
+    ├── css/
+    │   └── style.css     # Professional styling
+    └── js/
+        └── script.js     # Client-side interactivity
 ```
 
----
-
-## 🚀 Getting Started
+## Installation & Setup
 
 ### Prerequisites
-- Python 3.9 or higher
-- Jupyter Notebook / JupyterLab
-- Required libraries: None (uses only Python standard library)
 
-### Installation
+- Python 3.7 or higher
+- pip (Python package manager)
 
-```bash
-# Clone the repository
-git clone https://github.com/ShumailaMaryam062/S26-Programming-for-AI-Lab.git
+### Steps
 
-# Navigate to Task 03
-cd "Task 03"
+1. **Navigate to the flask_app directory:**
 
-# Launch Jupyter
-jupyter notebook Waterjug.ipynb
-```
-
-### Usage
-
-1. Open `Waterjug.ipynb` in Jupyter Notebook
-2. Modify jug capacities and goal (optional):
-   ```python
-   jug1_capacity = 4  # Jug 1 capacity
-   jug2_capacity = 3  # Jug 2 capacity
-   goal_liters = 2    # Target amount
+   ```bash
+   cd flask_app
    ```
-3. Run all cells sequentially
-4. View the complete solution path and operations
 
----
+2. **Install dependencies:**
 
-## 📊 Example Execution
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```
-Enter capacity of Jug 1 (liters): 4
-Enter capacity of Jug 2 (liters): 3
-Enter the goal amount to measure (liters): 2
+3. **Run the Flask application:**
 
-Found solution!
-Jug 1: 4L, Jug 2: 3L, Target: 2L
+   ```bash
+   python app.py
+   ```
 
-Path:
-0: (0, 0)
-1: (4, 0)
-2: (1, 3)
-3: (1, 0)
-4: (0, 1)
-5: (4, 1)
-6: (2, 3)
+4. **Open your browser:**
+   Navigate to `http://localhost:5000`
 
-Operations:
-1: Fill jug 1: (0, 0) => (4, 0)
-2: Pour jug 1 to 2: (4, 0) => (1, 3)
-3: Empty jug 2: (1, 3) => (1, 0)
-4: Pour jug 1 to 2: (1, 0) => (0, 1)
-5: Fill jug 1: (0, 1) => (4, 1)
-6: Pour jug 1 to 2: (4, 1) => (2, 3)
+## Usage
 
-Total moves: 6
-```
+1. **Enter Jug Capacities:**
+   - Input the capacity of Jug 1 (in liters)
+   - Input the capacity of Jug 2 (in liters)
+   - Enter the target amount to measure (in liters)
 
----
+2. **Click "Solve":**
+   The application will compute the solution using DFS
 
-## 💡 Key Concepts
+3. **View Results:**
+   - Solution summary with jug capacities and target
+   - Visual state transitions showing water states
+   - Detailed step-by-step operations
+   - Total number of moves required
 
-- **State Space Search:** Exploring all possible states to find the goal
-- **Backtracking:** Retracing steps when a dead-end is encountered
-- **Graph Theory:** Treating states as nodes and operations as edges
-- **Artificial Intelligence:** Classic problem in search algorithms
+## Default Example
 
----
+**Problem:** Given two jugs with capacities of 4 liters and 3 liters, find a sequence of operations to measure exactly 2 liters in one of the jugs.
 
-## 🎓 Learning Outcomes
+**Solution:** 5 moves
 
-✓ Understanding of state-space representation
-✓ Implementation of DFS algorithm
-✓ Backtracking strategies
-✓ Problem-solving approach in AI
-✓ Path-finding techniques
+## How the Algorithm Works
 
----
+The application uses **Depth-First Search (DFS)** to explore all possible states:
 
-## 📝 Notes
+### Available Operations
 
-- Not all capacity combinations have a solution
-- The solution finds a valid path, not necessarily the shortest path (for BFS use instead)
-- Multiple solutions may exist for the same problem
+1. **Fill** - Fill a jug to its maximum capacity
+2. **Empty** - Empty a jug completely
+3. **Pour** - Transfer water from one jug to another until:
+   - The source jug is empty, OR
+   - The destination jug is full
 
----
+### State Representation
 
-## 📚 References
+States are represented as (x, y) where:
+- x = amount of water in Jug 1
+- y = amount of water in Jug 2
 
-- [Depth-First Search - Wikipedia](https://en.wikipedia.org/wiki/Depth-first_search)
-- [State Space Search - AI Course](https://en.wikipedia.org/wiki/State_space_search)
-- [Classic AI Problems](https://en.wikipedia.org/wiki/Category:AI_problems)
+## Technical Details
 
----
+- **Backend:** Flask (Python)
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript
+- **Algorithm:** Depth-First Search (DFS)
+- **Features:** Real-time validation, error handling, responsive design
 
-## ✉️ Contact & Support
+## Browser Compatibility
 
-For questions or suggestions, please contact:
-- **Email:** shumailamaryam039@gmail.com
-- **GitHub:** [ShumailaMaryam062](https://github.com/ShumailaMaryam062)
+- Chrome/Chromium ✓
+- Firefox ✓
+- Safari ✓
+- Edge ✓
 
----
+## Performance
 
-**Last Updated:** February 2026
-**Version:** 1.0
+- Efficient DFS implementation with memoization
+- Client-side form validation for instant feedback
+- Smooth animations and transitions for better UX
 
+## Version History
+
+- **v2.0** - Enhanced UI with AquaLogic AI branding, playback controls, history, and themes
+- **v1.0** - Initial release with professional UI and full DFS functionality
+
+## Author
+
+**Shumaila Maryam**
+
+## License
+
+Free to use for educational purposes.
